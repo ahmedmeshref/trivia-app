@@ -1,32 +1,28 @@
 from flask import Blueprint, jsonify, request
+from flask_cors import CORS
 
 from ..models import db, Category, Question
 from .utils import *
 
 question = Blueprint("question", __name__)
 
-
-@question.route("/")
-def home():
-    return "I am bp from question"
+# enable CORS for questions
+CORS(question, resources={r"/questions/*": {"origins": "*"}})
 
 
-'''
-@TODO: 
-Create an endpoint to handle GET requests for questions, 
-including pagination (every 10 questions). 
-This endpoint should return a list of questions, 
-number of total questions, current category, categories. 
-
-TEST: At this point, when you start the application
-you should see questions and categories generated,
-ten questions per page and pagination at the bottom of the screen for three pages.
-Clicking on the page numbers should update the questions. 
-'''
+# CORS Headers
+@question.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
+    return response
 
 
 @question.route("/questions")
 def get_questions():
+    """
+    get_questions handles GET requests for questions, including pagination (every 10 questions).
+    """
     # list of questions, number of total questions, current category, categories
     questions = db.session.query(Question).all()
     tot_questions = len(questions)

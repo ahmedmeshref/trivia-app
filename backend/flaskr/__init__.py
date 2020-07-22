@@ -1,7 +1,4 @@
-import os
-from flask import Flask, request, abort, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
+from flask import Flask
 
 from .models import setup_db, db, Question, Category
 from config import config_by_name
@@ -10,7 +7,6 @@ from config import config_by_name
 def create_app(config_object='development'):
     # create and configure the app
     app = Flask(__name__)
-    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.config.from_object(config_by_name[config_object])
 
     # CORS Headers
@@ -31,4 +27,3 @@ def create_app(config_object='development'):
         app.register_blueprint(questions.question)
 
         return app
-
