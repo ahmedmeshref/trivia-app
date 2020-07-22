@@ -34,7 +34,7 @@ def get_questions():
         'questions': formatted_questions,
         'total_questions': tot_questions,
         'categories': formatted_categories,
-        'current_category': current_category
+        'current_category': None
     })
 
 
