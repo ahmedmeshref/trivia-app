@@ -1,14 +1,13 @@
-from flask import current_app, Blueprint, jsonify
+from flask import Blueprint, jsonify
 
-from ..models import db, Category
+from ..models import Category
 
 category = Blueprint("category", __name__)
 
 
 @category.route("/categories")
 def get_categories():
-    categories = db.session.query(Category).all()
-    formatted_categories = [cat.format() for cat in categories]
+    formatted_categories = Category.get_categories()
     return jsonify({
         'success': True,
         'categories': formatted_categories

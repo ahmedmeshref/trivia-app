@@ -61,6 +61,12 @@ class Category(db.Model):
     def __init__(self, type):
         self.type = type
 
+    @staticmethod
+    def get_categories():
+        categories = db.session.query(Category).all()
+        formatted_categories = [cat.format() for cat in categories]
+        return formatted_categories
+
     def format(self):
         return {
             'id': self.id,

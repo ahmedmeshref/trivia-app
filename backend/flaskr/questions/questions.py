@@ -1,4 +1,7 @@
-from flask import current_app, Blueprint
+from flask import Blueprint, jsonify, request
+
+from ..models import db, Category, Question
+from .utils import *
 
 question = Blueprint("question", __name__)
 
@@ -20,9 +23,24 @@ you should see questions and categories generated,
 ten questions per page and pagination at the bottom of the screen for three pages.
 Clicking on the page numbers should update the questions. 
 '''
+
+
 @question.route("/questions")
 def get_questions():
-    pass
+    # list of questions, number of total questions, current category, categories
+    questions = db.session.query(Question).all()
+    tot_questions = len(questions)
+    formatted_questions = pagination(request, questions)
+    formatted_categories = Category.get_categories()
+    current_category = [cat["type"] for cat in formatted_categories]
+    return jsonify({
+        'success': True,
+        'questions': formatted_questions,
+        'total_questions': tot_questions,
+        'categories': formatted_categories,
+        'current_category': current_category
+    })
+
 
 '''
 @TODO: 
