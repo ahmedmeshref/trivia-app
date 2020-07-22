@@ -17,8 +17,13 @@ def create_app(config_object='development'):
     with app.app_context():
         setup_db(app)
         # import blueprints
+        from .categories import categries
+        from .questions import questions
 
         # register blueprints
+        app.register_blueprint(categries.category)
+        app.register_blueprint(questions.question)
+
         return app
 
     '''
