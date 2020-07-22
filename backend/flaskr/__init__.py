@@ -16,14 +16,9 @@ def create_app(config_object='development'):
 
     with app.app_context():
         setup_db(app)
+        # import blueprints
 
-        @app.route("/")
-        def home():
-            res = db.session.query(Question).limit(10).all()
-            res = [q.format() for q in res]
-            return jsonify({
-                "res": res
-            })
+        # register blueprints
         return app
 
     '''
