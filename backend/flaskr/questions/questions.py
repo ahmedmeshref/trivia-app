@@ -24,15 +24,13 @@ def get_questions():
     get_questions handles GET requests for questions, including pagination (every 10 questions).
     """
     # list of questions, number of total questions, current category, categories
-    questions = db.session.query(Question).all()
-    tot_questions = len(questions)
+    questions = db.session.query(Question).order_by(Question.id).all()
     formatted_questions = pagination(request, questions)
     formatted_categories = Category.get_categories()
-    current_category = [cat["type"] for cat in formatted_categories]
     return jsonify({
         'success': True,
         'questions': formatted_questions,
-        'total_questions': tot_questions,
+        'total_questions': len(questions),
         'categories': formatted_categories,
         'current_category': None
     })
