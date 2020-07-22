@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 from .models import setup_db, db, Question, Category
-from backend.config import config_by_name
+from config import config_by_name
 
 QUESTIONS_PER_PAGE = 10
 
@@ -19,8 +19,11 @@ def create_app(config_object='development'):
 
         @app.route("/")
         def home():
-            return jsonify({"success": True})
-
+            res = db.session.query(Question).limit(10).all()
+            res = [q.format() for q in res]
+            return jsonify({
+                "res": res
+            })
         return app
 
     '''

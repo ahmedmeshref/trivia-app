@@ -11,9 +11,6 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     SECRET_KEY = 'development'
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('POSTGRESQL') + 'trivia'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
 
 
@@ -22,9 +19,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     SECRET_KEY = 'testmyplantapp'
-    DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('POSTGRESQL') + 'trivia'
 
 
 config_by_name = {
