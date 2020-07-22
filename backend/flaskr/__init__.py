@@ -6,8 +6,6 @@ from flask_cors import CORS
 from .models import setup_db, db, Question, Category
 from config import config_by_name
 
-QUESTIONS_PER_PAGE = 10
-
 
 def create_app(config_object='development'):
     # create and configure the app

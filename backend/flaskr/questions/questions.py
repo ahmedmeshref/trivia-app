@@ -20,6 +20,9 @@ you should see questions and categories generated,
 ten questions per page and pagination at the bottom of the screen for three pages.
 Clicking on the page numbers should update the questions. 
 '''
+@question.route("/questions")
+def get_questions():
+    pass
 
 '''
 @TODO: 
