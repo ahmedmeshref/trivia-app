@@ -3,6 +3,8 @@ from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
+from .questions.utils import pagination
+
 # create a db instance
 db = SQLAlchemy()
 
@@ -41,6 +43,12 @@ class Question(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    @staticmethod
+    def get(request):
+        questions = db.session.query(Question).order_by(Question.id).all()
+        formatted_questions = pagination(request, questions)
+        return [formatted_questions, len(questions)]
+
     def format(self):
         return {
             'id': self.id,
@@ -62,7 +70,7 @@ class Category(db.Model):
         self.type = type
 
     @staticmethod
-    def get_categories():
+    def get():
         categories = db.session.query(Category).all()
         formatted_categories = [cat.format() for cat in categories]
         return formatted_categories

@@ -23,14 +23,12 @@ def get_questions():
     """
     get_questions handles GET requests for questions, including pagination (every 10 questions).
     """
-    # list of questions, number of total questions, current category, categories
-    questions = db.session.query(Question).order_by(Question.id).all()
-    formatted_questions = pagination(request, questions)
-    formatted_categories = Category.get_categories()
+    formatted_questions, tot_questions = Question.get(request)
+    formatted_categories = Category.get()
     return jsonify({
         'success': True,
         'questions': formatted_questions,
-        'total_questions': len(questions),
+        'total_questions': tot_questions,
         'categories': formatted_categories,
         'current_category': None
     })
@@ -43,6 +41,21 @@ Create an endpoint to DELETE question using a question ID.
 TEST: When you click the trash icon next to a question, the question will be removed.
 This removal will persist in the database and when you refresh the page. 
 '''
+
+
+@question.route("/questions/<int:id>", methods=["DELETE"])
+def delete_question(id):
+    target_question = get_item_or_404(Question, id)
+    target_question.delete()
+    formatted_questions, tot_questions = Question.get(request)
+
+    return jsonify({
+        'success': True,
+        'id': id,
+        'questions': formatted_questions,
+        'total_questions': tot_questions
+    })
+
 
 '''
 @TODO: 
