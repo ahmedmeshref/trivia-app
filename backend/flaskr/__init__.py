@@ -2,17 +2,26 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-import random
 
-from .models import setup_db, Question, Category
+from .models import setup_db, db, Question, Category
+from backend.config import config_by_name
 
 QUESTIONS_PER_PAGE = 10
 
 
-def create_app(test_config=None):
+def create_app(config_object='development'):
     # create and configure the app
     app = Flask(__name__)
-    setup_db(app)
+    app.config.from_object(config_by_name[config_object])
+
+    with app.app_context():
+        setup_db(app)
+
+        @app.route("/")
+        def home():
+            return jsonify({"success": True})
+
+        return app
 
     '''
     @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
@@ -97,5 +106,3 @@ def create_app(test_config=None):
     Create error handlers for all expected errors 
     including 404 and 422. 
     '''
-
-    return app
