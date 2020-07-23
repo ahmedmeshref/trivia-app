@@ -19,6 +19,13 @@ class TriviaTestClass(unittest.TestCase):
             # setUp db on the app
             setup_db(self.app)
 
+        self.new_question = {
+            "question": "Do you love Coding?",
+            "answer": "yes",
+            "category": 5,
+            "difficulty": 3
+        }
+
     def tearDown(self):
         """Executed after reach test"""
         pass
@@ -57,6 +64,31 @@ class TriviaTestClass(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], 'Resource Not Found')
+
+    def test_create_question(self):
+        # test deleting existing question with id = 2
+        response = self.client.post("/questions", json=self.new_question)
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(len(data["questions"]), QUESTIONS_PER_PAGE)
+        self.assertTrue(data["total_questions"])
+
+    def test_400_create_question_with_data_missing(self):
+        # test deleting existing question with id = 2
+        response = self.client.post("/questions")
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], 'Bad Request')
+
+    def test_405_create_question_on_wrong_endpoint(self):
+        # test deleting existing question with id = 2
+        response = self.client.post("/questions/1", json=self.new_question)
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], 'Method Not Allowed')
 
 
 # Make the tests conveniently executable
