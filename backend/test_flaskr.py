@@ -1,9 +1,9 @@
-import os
+from os import path
 import unittest
 import json
 
-from .flaskr import create_app
-from .flaskr.models import setup_db, db, Question, Category
+from flaskr import create_app
+from flaskr.models import setup_db, db, Question
 
 
 class TriviaTestClass(unittest.TestCase):
@@ -25,4 +25,5 @@ class TriviaTestClass(unittest.TestCase):
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
+
     unittest.main()

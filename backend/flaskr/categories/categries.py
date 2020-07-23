@@ -19,7 +19,7 @@ def after_request(response):
 
 @category.route("/categories")
 def get_categories():
-    formatted_categories = Category.get_categories()
+    formatted_categories = Category.get()
     return jsonify({
         'success': True,
         'categories': formatted_categories

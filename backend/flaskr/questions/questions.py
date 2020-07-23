@@ -18,17 +18,18 @@ def after_request(response):
     return response
 
 
-@question.route("/questions")
+@question.route("/questions", methods=["GET"])
 def get_questions():
     """
     get_questions handles GET requests for questions, including pagination (every 10 questions).
     """
-    formatted_questions, tot_questions = get_questions(request)
+    questions = db.session.query(Question).order_by(Question.id).all()
+    formatted_questions = pagination(request, questions)
     formatted_categories = Category.get()
     return jsonify({
         'success': True,
         'questions': formatted_questions,
-        'total_questions': tot_questions,
+        'total_questions': len(questions),
         'categories': formatted_categories,
         'current_category': None
     })
@@ -43,17 +44,14 @@ This removal will persist in the database and when you refresh the page.
 '''
 
 
-@question.route("/questions/<int:id>", methods=["DELETE"])
-def delete_question(id):
-    target_question = get_item_or_404(Question, id)
+@question.route("/questions/<int:question_id>", methods=["DELETE"])
+def delete_question(question_id):
+    target_question = get_item_or_404(Question, question_id)
     target_question.delete()
-    formatted_questions, tot_questions = get_questions(request)
 
     return jsonify({
         'success': True,
         'id': id,
-        'questions': formatted_questions,
-        'total_questions': tot_questions
     })
 
 
