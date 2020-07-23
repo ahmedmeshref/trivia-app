@@ -81,6 +81,21 @@ the form will clear and the question will appear at the end of the last page
 of the questions list in the "List" tab.  
 '''
 
+
+@question.route("/questions", methods=["POST"])
+def create_question():
+    res = request.get_json()
+    question_ins = Question()
+    attrs = dir(question_ins)
+    # set attrs values of new_question instance from given request data
+    new_question = set_attributes(question_ins, attrs, res)
+    # if any missing data on res, raise bad request error
+    if not new_question:
+        abort(400)
+    return "done"
+
+
+
 '''
 @TODO: 
 Create a POST endpoint to get questions based on a search term. 

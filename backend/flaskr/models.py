@@ -24,11 +24,11 @@ class Question(db.Model):
     category = Column(String)
     difficulty = Column(Integer)
 
-    def __init__(self, question, answer, category, difficulty):
-        self.question = question
-        self.answer = answer
-        self.category = category
-        self.difficulty = difficulty
+    def __repr__(self):
+        return f"<Question {self.question, self.category}>"
+
+    def __dir__(self):
+        return ["question", "answer", "category", "difficulty"]
 
     def insert(self):
         db.session.add(self)

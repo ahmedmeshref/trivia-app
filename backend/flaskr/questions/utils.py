@@ -14,3 +14,17 @@ def pagination(re, selection):
 def get_item_or_404(db_table, id):
     return db.session.query(db_table).get_or_404(id)
 
+
+def set_attributes(instance, attrs, res):
+    """
+    set_attributes from a given dictionary on instance object
+    """
+    if not res:
+        return False
+    for attr in attrs:
+        attr_val = res.get(attr)
+        # all attributes are required
+        if not attr_val:
+            return False
+        setattr(instance, attr, attr_val)
+    return instance
