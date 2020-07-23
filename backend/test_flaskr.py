@@ -40,7 +40,6 @@ class TriviaTestClass(unittest.TestCase):
         self.assertEqual(data["success"], True)
 
 
-
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
