@@ -1,7 +1,7 @@
 from flask import Flask
 
 from .models import setup_db, db, Question, Category
-from config import config_by_name
+from ..config import config_by_name
 
 
 def create_app(config_object='development'):

@@ -3,8 +3,6 @@ from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-from .questions.utils import pagination
-
 # create a db instance
 db = SQLAlchemy()
 
@@ -42,12 +40,6 @@ class Question(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-
-    @staticmethod
-    def get(request):
-        questions = db.session.query(Question).order_by(Question.id).all()
-        formatted_questions = pagination(request, questions)
-        return [formatted_questions, len(questions)]
 
     def format(self):
         return {

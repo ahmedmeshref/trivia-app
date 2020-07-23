@@ -23,7 +23,7 @@ def get_questions():
     """
     get_questions handles GET requests for questions, including pagination (every 10 questions).
     """
-    formatted_questions, tot_questions = Question.get(request)
+    formatted_questions, tot_questions = get_questions(request)
     formatted_categories = Category.get()
     return jsonify({
         'success': True,
@@ -47,7 +47,7 @@ This removal will persist in the database and when you refresh the page.
 def delete_question(id):
     target_question = get_item_or_404(Question, id)
     target_question.delete()
-    formatted_questions, tot_questions = Question.get(request)
+    formatted_questions, tot_questions = get_questions(request)
 
     return jsonify({
         'success': True,

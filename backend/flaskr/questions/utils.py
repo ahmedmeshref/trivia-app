@@ -1,4 +1,4 @@
-from ..models import db
+from ..models import db, Question
 
 QUESTIONS_PER_PAGE = 10
 
@@ -13,3 +13,9 @@ def pagination(request, selection):
 
 def get_item_or_404(db_table, id):
     return db.session.query(db_table).get_or_404(id)
+
+
+def get_questions(request):
+    questions = db.session.query(Question).order_by(Question.id).all()
+    formatted_questions = pagination(request, questions)
+    return [formatted_questions, len(questions)]
