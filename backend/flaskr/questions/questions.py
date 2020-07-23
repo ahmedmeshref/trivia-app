@@ -25,8 +25,7 @@ def get_questions():
     """
     error = False
     try:
-        questions = db.session.query(Question).order_by(Question.id).all()
-        formatted_questions = pagination(request, questions)
+        formatted_questions, tot_questions = query_questions(request)
         formatted_categories = Category.get()
     except Exception as e:
         error = True
@@ -43,7 +42,7 @@ def get_questions():
     return jsonify({
         'success': True,
         'questions': formatted_questions,
-        'total_questions': len(questions),
+        'total_questions': tot_questions,
         'categories': formatted_categories,
         'current_category': None
     })
@@ -88,11 +87,27 @@ def create_question():
     question_ins = Question()
     attrs = dir(question_ins)
     # set attrs values of new_question instance from given request data
-    new_question = set_attributes(question_ins, attrs, res)
-    # if any missing data on res, raise bad request error
-    if not new_question:
-        abort(400)
-    return "done"
+    new_question = set_attributes_all_required(question_ins, attrs, res)
+
+    error = False
+    try:
+        new_question.insert()
+        formatted_questions, tot_questions = query_questions(request)
+    except:
+        error = True
+        db.session.rollback()
+    finally:
+        db.session.close()
+
+    # if error creating the question, raise exception (Unprocessable Request)
+    if error:
+        abort(422)
+    return jsonify({
+        'success': True,
+        'questions': formatted_questions,
+        'total_questions': tot_questions,
+        'current_category': None
+    })
 
 
 
