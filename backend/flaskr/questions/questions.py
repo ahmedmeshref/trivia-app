@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, abort
 from flask_cors import CORS
 
 from ..models import db, Category, Question
@@ -7,7 +7,7 @@ from .utils import *
 question = Blueprint("question", __name__)
 
 # enable CORS for questions
-CORS(question, resources={r"/questions/*": {"origins": "*"}})
+CORS(question, resources={r"/api/*": {"origins": "*"}})
 
 
 # CORS Headers
@@ -23,9 +23,23 @@ def get_questions():
     """
     get_questions handles GET requests for questions, including pagination (every 10 questions).
     """
-    questions = db.session.query(Question).order_by(Question.id).all()
-    formatted_questions = pagination(request, questions)
-    formatted_categories = Category.get()
+    error = False
+    try:
+        questions = db.session.query(Question).order_by(Question.id).all()
+        formatted_questions = pagination(request, questions)
+        formatted_categories = Category.get()
+    except Exception as e:
+        error = True
+        db.session.rollback()
+    finally:
+        db.session.close()
+
+    if error:
+        # if eternal server error
+        abort(500)
+    elif not formatted_questions:
+        # no questions found
+        abort(404)
     return jsonify({
         'success': True,
         'questions': formatted_questions,
