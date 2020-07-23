@@ -22,15 +22,25 @@ class TriviaTestClass(unittest.TestCase):
         """Executed after reach test"""
         pass
 
-    def test_get_questions(self):
+    def test_get_questions_with_results(self):
         response = self.client.get("/questions?page=1")
-        data = json.loads(response)
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(len(data["questions"]))
+        self.assertTrue(len(data["categories"]))
+        self.assertTrue(data["total_questions"])
+
+    def test_get_questions_with_no_results(self):
+        response = self.client.get("/questions?page=1000")
+        data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data["success"], True)
 
 
+
 # Make the tests conveniently executable
 if __name__ == "__main__":
-
     unittest.main()
