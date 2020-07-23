@@ -49,23 +49,24 @@ def get_questions():
     })
 
 
-'''
-@TODO: 
-Create an endpoint to DELETE question using a question ID. 
-
-TEST: When you click the trash icon next to a question, the question will be removed.
-This removal will persist in the database and when you refresh the page. 
-'''
-
-
 @question.route("/questions/<int:question_id>", methods=["DELETE"])
 def delete_question(question_id):
+    """
+    delete_question deletes a question from db with the given id
+    """
     target_question = get_item_or_404(Question, question_id)
-    target_question.delete()
-
+    error = False
+    try:
+        target_question.delete()
+    except Exception as e:
+        error = True
+        db.session.rollback()
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
     return jsonify({
         'success': True,
-        'id': id,
     })
 
 
@@ -110,10 +111,4 @@ if provided, and that is not one of the previous questions.
 TEST: In the "Play" tab, after a user selects "All" or a category,
 one question at a time is displayed, the user is allowed to answer
 and shown whether they were correct or not. 
-'''
-
-'''
-@TODO: 
-Create error handlers for all expected errors 
-including 404 and 422. 
 '''
