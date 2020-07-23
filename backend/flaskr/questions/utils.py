@@ -24,9 +24,16 @@ def query_questions(response):
 
 
 def set_attributes_all_required(instance, attrs, res):
-    """
-    set_attributes_all_required strictly sets all given attributes on a given instance from a given dictionary. If any
-        attribute value is missing, raise exception (Bad Request).
+    """strictly sets all given attributes on a given instance from a given dictionary. If any attribute value is
+        missing, raise exception (Bad Request).
+    @type instance: object
+    @param instance: A class instance
+    @type attrs: list
+    @param attrs: A list of attributes
+    @type res: dict
+    @param attrs: dict {"attribute": value}
+    @rtype: object
+    @returns: a list of strings representing the header columns
     """
     if not res:
         abort(400)
