@@ -90,6 +90,24 @@ class TriviaTestClass(unittest.TestCase):
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], 'Method Not Allowed')
 
+    def test_get_questions_by_category(self):
+        # test getting all questions for category 1
+        response = self.client.get("/categories/1/questions")
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(len(data["questions"]))
+        self.assertTrue(data["total_questions"])
+        self.assertTrue(data["current_category"])
+
+    def test_404_get_questions_of_non_existing_category(self):
+        # test getting all questions for category 1000
+        response = self.client.get("/categories/1000/questions")
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], 'Resource Not Found')
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

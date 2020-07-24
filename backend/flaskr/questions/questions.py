@@ -7,19 +7,18 @@ from .utils import *
 question = Blueprint("question", __name__)
 
 # enable CORS for questions
-cors = CORS(question, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(question, resources={r"/question/*": {"origins": "*"}})
 
 
 # CORS Headers
 @question.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS')
     return response
 
 
 @question.route("/questions", methods=["GET"])
-@cross_origin()
 def get_questions():
     """
     get_questions handles GET requests for questions, including pagination (every 10 questions).
@@ -99,7 +98,6 @@ def create_question():
     })
 
 
-
 '''
 @TODO: 
 Create a POST endpoint to get questions based on a search term. 
@@ -119,6 +117,41 @@ TEST: In the "List" tab / main screen, clicking on one of the
 categories in the left column will cause only questions of that 
 category to be shown. 
 '''
+
+
+@question.route("/categories/<int:category_id>/questions", methods=["GET"])
+def get_questions_by_cat(category_id):
+    """get questions based on category id. The questions are paginated in groups of 10.
+    @type category_id: int
+    @param category_id:
+    @rtype: json Object
+    @returns: json object with results value, list of questions, number of total questions, current category id.
+    """
+    # verify a given category_id maps to an existing category
+    get_item_or_404(Category, category_id)
+
+    error = False
+    try:
+        formatted_questions, tot_questions = query_questions(request, cat_id=category_id)
+    except Exception as e:
+        error = True
+        db.session.rollback()
+    finally:
+        db.session.close()
+
+    if error:
+        # if eternal server error
+        abort(500)
+    elif not formatted_questions:
+        # no questions found
+        abort(404)
+    return jsonify({
+        'success': True,
+        'questions': formatted_questions,
+        'total_questions': tot_questions,
+        'current_category': category_id
+    })
+
 
 '''
 @TODO: 

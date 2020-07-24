@@ -17,8 +17,11 @@ def get_item_or_404(db_table, id):
     return db.session.query(db_table).get_or_404(id)
 
 
-def query_questions(response):
-    questions = db.session.query(Question).order_by(Question.id).all()
+def query_questions(response, cat_id=None):
+    if cat_id:
+        questions = db.session.query(Question).filter(Question.category == str(cat_id)).order_by(Question.id).all()
+    else:
+        questions = db.session.query(Question).order_by(Question.id).all()
     formatted_questions = pagination(response, questions)
     return [formatted_questions, len(questions)]
 
