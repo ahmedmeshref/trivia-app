@@ -30,7 +30,7 @@ class TriviaTestClass(unittest.TestCase):
         """Executed after reach test"""
         pass
 
-    def test_get_questions_with_results(self):
+    def test_get_questions(self):
         response = self.client.get("/questions?page=1")
         data = json.loads(response.data)
 
@@ -40,16 +40,6 @@ class TriviaTestClass(unittest.TestCase):
             self.assertEqual(len(data["questions"]), QUESTIONS_PER_PAGE)
             self.assertTrue(len(data["categories"]))
             self.assertTrue(data["total_questions"])
-
-    def test_404_get_questions_with_no_results(self):
-        response = self.client.get("/questions?page=1000")
-        data = json.loads(response.data)
-
-        # no questions were found for a giveing page
-        if not data:
-            self.assertEqual(response.status_code, 404)
-            self.assertEqual(data["success"], False)
-            self.assertEqual(data["message"], 'Resource Not Found')
 
     def test_delete_user_given_existing_id(self):
         # test deleting existing question with id = 2

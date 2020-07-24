@@ -20,8 +20,7 @@ def after_request(response):
 
 @question.route("/questions", methods=["GET"])
 def get_questions():
-    """
-    get_questions handles GET requests for questions, including pagination (every 10 questions).
+    """handles GET requests for getting questions questions. Results are paginated in groups of 10 questions.
     """
     error = False
     try:
@@ -34,11 +33,8 @@ def get_questions():
         db.session.close()
 
     if error:
-        # if eternal server error
+        # raise internal server error if error is True
         abort(500)
-    elif not formatted_questions:
-        # no questions found
-        abort(404)
     return jsonify({
         'success': True,
         'questions': formatted_questions,
@@ -119,15 +115,39 @@ category to be shown.
 '''
 
 
+# @question.route("/questions/search", method=["POST"])
+# def search_questions():
+#     search_term = request.get_json()["searchTerm"]
+#
+#     error = False
+#     try:
+#         formatted_questions, tot_questions = query_questions(request, text=None, cat_id=None)
+#     except Exception as e:
+#         error = True
+#         db.session.rollback()
+#     finally:
+#         db.session.close()
+#
+#     if error:
+#         # if eternal server error
+#         abort(500)
+#     return jsonify({
+#         'success': True,
+#         'questions': formatted_questions,
+#         'total_questions': tot_questions,
+#         'current_category': category_id
+#     })
+
+
 @question.route("/categories/<int:category_id>/questions", methods=["GET"])
 def get_questions_by_cat(category_id):
-    """get questions based on category id. The questions are paginated in groups of 10.
+    """get questions based on category id. The questions are paginated in groups of 10 questions.
     @type category_id: int
-    @param category_id:
+    @param category_id
     @rtype: json Object
     @returns: json object with results value, list of questions, number of total questions, current category id.
     """
-    # verify a given category_id maps to an existing category
+    # verify a given category_id maps to an existing category. If not, raise 404 (Not Found) error.
     get_item_or_404(Category, category_id)
 
     error = False
@@ -140,11 +160,8 @@ def get_questions_by_cat(category_id):
         db.session.close()
 
     if error:
-        # if eternal server error
+        # raise internal server error if error is True
         abort(500)
-    elif not formatted_questions:
-        # no questions found
-        abort(404)
     return jsonify({
         'success': True,
         'questions': formatted_questions,
