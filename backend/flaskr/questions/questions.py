@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, abort
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 from ..models import db, Category, Question
 from .utils import *
@@ -7,7 +7,7 @@ from .utils import *
 question = Blueprint("question", __name__)
 
 # enable CORS for questions
-CORS(question, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(question, resources={r"/api/*": {"origins": "*"}})
 
 
 # CORS Headers
@@ -19,6 +19,7 @@ def after_request(response):
 
 
 @question.route("/questions", methods=["GET"])
+@cross_origin()
 def get_questions():
     """
     get_questions handles GET requests for questions, including pagination (every 10 questions).
@@ -44,7 +45,7 @@ def get_questions():
         'questions': formatted_questions,
         'total_questions': tot_questions,
         'categories': formatted_categories,
-        'current_category': None
+        'current_category': []
     })
 
 
