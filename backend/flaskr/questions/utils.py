@@ -12,7 +12,7 @@ QUESTIONS_PER_PAGE = 10
 
 def pagination(request, selection):
     page = request.args.get("page", 1, type=int)
-    if page > len(selection)//QUESTIONS_PER_PAGE:
+    if page > (len(selection)/QUESTIONS_PER_PAGE) + 1:
         # if Requested page is greater than total pages in db, then start from first element
         start = 0
     else:
@@ -22,8 +22,8 @@ def pagination(request, selection):
     return formatted_data
 
 
-def format_selection(selection, response):
-    formatted_questions = pagination(response, selection)
+def format_selection(request, selection):
+    formatted_questions = pagination(request, selection)
     return [formatted_questions, len(selection)]
 
 
@@ -34,7 +34,7 @@ def query_questions(request, text=None, cat_id=None):
         questions = db.session.query(Question).filter(Question.category == str(cat_id)).order_by(Question.id).all()
     else:
         questions = db.session.query(Question).order_by(Question.id).all()
-    return format_selection(questions, request)
+    return format_selection(request, questions)
 
 
 def set_attributes_all_required(instance, attrs, res):
