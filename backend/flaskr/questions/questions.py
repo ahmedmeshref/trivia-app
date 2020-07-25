@@ -30,7 +30,6 @@ def get_questions():
         formatted_categories = Category.get()
     except Exception as e:
         error = True
-        db.session.rollback()
     finally:
         db.session.close()
 
@@ -78,7 +77,7 @@ def create_question():
     try:
         new_question.insert()
         formatted_questions, tot_questions = query_questions(request)
-    except:
+    except Exception as e:
         error = True
         db.session.rollback()
     finally:
@@ -107,7 +106,6 @@ def search_questions():
         formatted_questions, tot_questions = query_questions(request, text=search_term)
     except Exception as e:
         error = True
-        db.session.rollback()
     finally:
         db.session.close()
 
@@ -136,7 +134,6 @@ def get_questions_by_cat(category_id):
         formatted_questions, tot_questions = query_questions(request, cat_id=category_id)
     except Exception as e:
         error = True
-        db.session.rollback()
     finally:
         db.session.close()
 
