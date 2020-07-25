@@ -1,5 +1,7 @@
-from flask import Blueprint, jsonify, request, abort
-from flask_cors import CORS, cross_origin
+import random
+
+from flask import Blueprint, jsonify, request
+from flask_cors import CORS
 
 from ..models import db, Category, Question
 from .utils import *
@@ -67,11 +69,11 @@ def delete_question(question_id):
 
 @question.route("/questions", methods=["POST"])
 def create_question():
-    res = request.get_json()
+    data = get_request_data_or_400(request)
     question_ins = Question()
     attrs = dir(question_ins)
     # set attrs values of new_question instance from given request data
-    new_question = set_attributes_all_required(question_ins, attrs, res)
+    new_question = set_attributes_all_required(question_ins, attrs, data)
 
     error = False
     try:
@@ -99,11 +101,8 @@ def search_questions():
     """handles POST request for getting search results. Results are paginated in groups of 10 questions.
     Note: if searchTerm == "" or None, all questions are going to be returned.
     """
-    data = request.get_json()
-    if not data:
-        # If request body is empty, raise 400 (Bad Request) error.
-        abort(400)
-    search_term = data.get("searchTerm")
+    data = get_request_data_or_400(request)
+    search_term = data.get("searchTerm", '')
 
     error = False
     try:
@@ -167,3 +166,37 @@ TEST: In the "Play" tab, after a user selects "All" or a category,
 one question at a time is displayed, the user is allowed to answer
 and shown whether they were correct or not. 
 '''
+
+
+@question.route("/quizzes", methods=["POST"])
+def get_questions_for_quiz():
+    """ handles post requests for getting questions to play the quiz. Request should contain quiz_category (int) and
+     previous questions (list).
+    @rtype: json Object
+    @returns: random questions within the given category
+    """
+    data = get_request_data_or_400(request)
+    previous_questions = data.get("previousQuestions")
+    current_category = data.get("quizCategory")
+    if not (current_category and get_item_or_404(Category, current_category["id"])):
+        # if not current category on the request or given category id doesn't map to an existing category, raise Bad
+        #  Request error (400).
+        abort(400)
+
+    error = False
+    try:
+        questions = db.session.query(Question).filter(Question.id.notin_(previous_questions),
+                                                      Question.category == str(current_category["id"])).all()
+        random_question = random.choice(questions)
+        formatted_question = random_question.format()
+    except Exception as e:
+        error = True
+    finally:
+        db.session.close()
+
+    if error:
+        abort(500)
+    return jsonify({
+        'success': True,
+        'question': formatted_question
+    })

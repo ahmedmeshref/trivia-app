@@ -7,12 +7,20 @@ def get_item_or_404(db_table, id):
     return db.session.query(db_table).get_or_404(id)
 
 
+def get_request_data_or_400(request):
+    data = request.get_json()
+    if not data:
+        # If request body is empty, raise 400 (Bad Request) error.
+        abort(400)
+    return data
+
+
 QUESTIONS_PER_PAGE = 10
 
 
 def pagination(request, selection):
     page = request.args.get("page", 1, type=int)
-    if page > (len(selection)/QUESTIONS_PER_PAGE) + 1:
+    if page > (len(selection) / QUESTIONS_PER_PAGE) + 1:
         # if Requested page is greater than total pages in db, then start from first element
         start = 0
     else:
@@ -49,8 +57,6 @@ def set_attributes_all_required(instance, attrs, res):
     @rtype: object
     @returns: a list of strings representing the header columns
     """
-    if not res:
-        abort(400)
     for attr in attrs:
         attr_val = res.get(attr)
         # all attributes are required
