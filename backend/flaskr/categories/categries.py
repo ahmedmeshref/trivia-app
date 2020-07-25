@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
-from ..models import Category
+from ..models import Category, db
+from flaskr.questions.utils import abort_error_if_any
 
 category = Blueprint("category", __name__)
 
@@ -19,8 +20,18 @@ def after_request(response):
 
 @category.route("/categories")
 def get_categories():
-    formatted_categories = Category.get()
+    error = False
+    try:
+        formatted_categories = Category.get()
+        # extract cat type of each category
+        categories_types = Category.get_types(formatted_categories)
+    except Exception as e:
+        error = True
+    finally:
+        db.session.close()
+
+    abort_error_if_any(error)
     return jsonify({
         'success': True,
-        'categories': formatted_categories
+        'categories': categories_types
     })

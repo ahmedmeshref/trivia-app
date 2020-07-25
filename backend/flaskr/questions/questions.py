@@ -27,9 +27,9 @@ def get_questions():
     error = False
     try:
         formatted_questions, tot_questions = query_questions(request)
-        formated_categories = Category.get()
+        formatted_categories = Category.get()
         # extract cat type of each category
-        categories_returned = [cat["type"] for cat in formated_categories]
+        categories_types = Category.get_types(formatted_categories)
     except Exception as e:
         error = True
     finally:
@@ -41,8 +41,8 @@ def get_questions():
         'success': True,
         'questions': formatted_questions,
         'total_questions': tot_questions,
-        'categories': categories_returned,
-        'current_category': categories_returned
+        'categories': categories_types,
+        'current_category': categories_types
     })
 
 
