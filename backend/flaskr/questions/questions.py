@@ -99,7 +99,7 @@ def search_questions():
     Note: if searchTerm == "" or None, all questions are going to be returned.
     """
     data = get_request_data_or_400(request)
-    search_term = data.get("searchTerm", '')
+    search_term = data.get("search_term", '')
 
     error = False
     try:
@@ -168,16 +168,17 @@ def get_questions_for_quiz():
     """
     data = get_request_data_or_400(request)
     previous_questions = data.get("previous_questions", [])
-    current_category = data.get("quiz_category", None)
-    if not (current_category and get_item_or_404(Category, current_category)):
-        # if not current category on the request body or given category id doesn't map to an existing category,
-        #   raise Bad Request error (400).
+    current_category = data.get("quiz_category")
+    if not current_category:
+        # if not current category on the request, raise Bad Request error (400)
         abort(400)
+    # verify given category id maps to an existing category, if not, raise Not Found error (404).
+    get_item_or_404(Category, int(current_category))
 
     error = False
     try:
         questions = db.session.query(Question).filter(Question.id.notin_(previous_questions),
-                                                      Question.category == str(current_category)).all()
+                                                      Question.category == current_category).all()
         random_question = random.choice(questions)
         formatted_question = random_question.format()
     except Exception as e:
@@ -188,5 +189,5 @@ def get_questions_for_quiz():
     abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
-        'question': formatted_question
+        'question': formatted_question,
     })

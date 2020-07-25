@@ -13,7 +13,7 @@ CORS(category, resources={r"/categories/*": {"origins": "*"}})
 @category.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS')
     return response
 
 
