@@ -41,6 +41,15 @@ class TriviaTestClass(unittest.TestCase):
             self.assertTrue(len(data["categories"]))
             self.assertTrue(data["total_questions"])
 
+    def test_get_categories(self):
+        response = self.client.get("/categories")
+        data = json.loads(response.data)
+
+        if data:
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(data["success"], True)
+            self.assertTrue(len(data["categories"]))
+
     def test_delete_user_given_existing_id(self):
         # test deleting existing question with id = 2
         response = self.client.delete("/questions/2")
