@@ -34,9 +34,8 @@ def get_questions():
     finally:
         db.session.close()
 
-    if error:
-        # raise internal server error if error is True
-        abort(500)
+    # raise internal server error if error is True
+    abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
         'questions': formatted_questions,
@@ -60,8 +59,8 @@ def delete_question(question_id):
         db.session.rollback()
     finally:
         db.session.close()
-    if error:
-        abort(500)
+
+    abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
     })
@@ -85,9 +84,8 @@ def create_question():
     finally:
         db.session.close()
 
-    # if error creating the question, raise exception (Unprocessable Request)
-    if error:
-        abort(422)
+    # raise exception (Unprocessable Request), if error is True
+    abort_error_if_any(error, 422)
     return jsonify({
         'success': True,
         'questions': formatted_questions,
@@ -113,9 +111,7 @@ def search_questions():
     finally:
         db.session.close()
 
-    if error:
-        # if eternal server error
-        abort(500)
+    abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
         'questions': formatted_questions,
@@ -144,9 +140,7 @@ def get_questions_by_cat(category_id):
     finally:
         db.session.close()
 
-    if error:
-        # raise internal server error if error is True
-        abort(500)
+    abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
         'questions': formatted_questions,
@@ -176,11 +170,11 @@ def get_questions_for_quiz():
     @returns: random questions within the given category
     """
     data = get_request_data_or_400(request)
-    previous_questions = data.get("previous_questions")
-    current_category = data.get("quiz_category")
+    previous_questions = data.get("previous_questions", [])
+    current_category = data.get("quiz_category", None)
     if not (current_category and get_item_or_404(Category, current_category)):
         # if not current category on the request body or given category id doesn't map to an existing category,
-        # raise Bad Request error (400).
+        #   raise Bad Request error (400).
         abort(400)
 
     error = False
@@ -194,8 +188,7 @@ def get_questions_for_quiz():
     finally:
         db.session.close()
 
-    if error:
-        abort(500)
+    abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
         'question': formatted_question

@@ -15,6 +15,18 @@ def get_request_data_or_400(request):
     return data
 
 
+def abort_error_if_any(error, error_code=500):
+    """
+    @type error: bool
+    @param error
+    @type error_code: int
+    @param error_code: code for specifying the error to be raised
+    @return: raise error_code if error is True, otherwise None
+    """
+    if error:
+        abort(error_code)
+
+
 QUESTIONS_PER_PAGE = 10
 
 
