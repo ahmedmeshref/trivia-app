@@ -56,7 +56,6 @@ class TriviaTestClass(unittest.TestCase):
         self.assertEqual(data["message"], 'Resource Not Found')
 
     def test_create_question(self):
-        # test deleting existing question with id = 2
         response = self.client.post("/questions", json=self.new_question)
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 200)
@@ -65,7 +64,6 @@ class TriviaTestClass(unittest.TestCase):
         self.assertTrue(data["total_questions"])
 
     def test_400_create_question_with_data_missing(self):
-        # test deleting existing question with id = 2
         response = self.client.post("/questions")
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 400)
@@ -73,7 +71,6 @@ class TriviaTestClass(unittest.TestCase):
         self.assertEqual(data["message"], 'Bad Request')
 
     def test_405_create_question_on_wrong_endpoint(self):
-        # test deleting existing question with id = 2
         response = self.client.post("/questions/1", json=self.new_question)
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 405)
@@ -97,6 +94,34 @@ class TriviaTestClass(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], 'Resource Not Found')
+
+    def test_search_question_with_searchTerm(self):
+        # test search questions with What keyword
+        searchTerm = 'What'
+        response = self.client.post("/questions/search", json={'searchTerm': searchTerm})
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(len(data["questions"]))
+        self.assertTrue(data["total_questions"])
+
+    def test_search_question_with_empty_string_searchTerm(self):
+        # test get all questions in case of empty string searchTerm
+        searchTerm = ''
+        response = self.client.post("/questions/search", json={'searchTerm': searchTerm})
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(len(data["questions"]))
+        self.assertTrue(data["total_questions"])
+
+    def test_400_create_question_without_specifying_searchTerm(self):
+        # test deleting existing question with id = 2
+        response = self.client.post("/questions/search")
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], 'Bad Request')
 
 
 # Make the tests conveniently executable

@@ -94,31 +94,10 @@ def create_question():
     })
 
 
-'''
-@TODO: 
-Create a POST endpoint to get questions based on a search term. 
-It should return any questions for whom the search term 
-is a substring of the question. 
-
-TEST: Search by any phrase. The questions list will update to include 
-only question that include that string within their question. 
-Try using the word "title" to start. 
-'''
-
-'''
-@TODO: 
-Create a GET endpoint to get questions based on category. 
-
-TEST: In the "List" tab / main screen, clicking on one of the 
-categories in the left column will cause only questions of that 
-category to be shown. 
-'''
-
-
 @question.route("/questions/search", methods=["POST"])
 def search_questions():
     """handles POST request for getting search results. Results are paginated in groups of 10 questions.
-    Note: if searchTerm == "", all questions are returned.
+    Note: if searchTerm == "" or None, all questions are going to be returned.
     """
     data = request.get_json()
     if not data:
