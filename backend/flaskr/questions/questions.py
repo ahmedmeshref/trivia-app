@@ -23,6 +23,7 @@ def after_request(response):
 @question.route("/questions", methods=["GET"])
 def get_questions():
     """handles GET requests for getting questions questions. Results are paginated in groups of 10 questions.
+    @rtype: JSON object
     """
     error = False
     try:
@@ -48,8 +49,7 @@ def get_questions():
 
 @question.route("/questions/<int:question_id>", methods=["DELETE"])
 def delete_question(question_id):
-    """
-    delete_question deletes a question from db with the given id
+    """handles delete questions from db with the given id.
     """
     target_question = get_item_or_404(Question, question_id)
     error = False
@@ -69,6 +69,9 @@ def delete_question(question_id):
 
 @question.route("/questions", methods=["POST"])
 def create_question():
+    """ handles creating new question with a post request.
+    @rtype: JSON object
+    """
     data = get_request_data_or_400(request)
     question_ins = Question()
     attrs = dir(question_ins)
@@ -97,8 +100,8 @@ def create_question():
 
 @question.route("/questions/search", methods=["POST"])
 def search_questions():
-    """handles POST request for getting search results. Results are paginated in groups of 10 questions.
-    Note: if searchTerm == "" or None, all questions are going to be returned.
+    """handles POST request for getting search results with a given searchTerm. Results are paginated in groups of 10
+    questions. Note: if searchTerm == "" or None, all questions in db are returned.
     """
     data = get_request_data_or_400(request)
     search_term = data.get("search_term", '')
@@ -106,17 +109,19 @@ def search_questions():
     error = False
     try:
         formatted_questions, tot_questions = query_questions(request, text=search_term)
+        categories = Category.get()
     except Exception as e:
         error = True
     finally:
         db.session.close()
 
     abort_error_if_any(error, 500)
+
     return jsonify({
         'success': True,
         'questions': formatted_questions,
         'total_questions': tot_questions,
-        'current_category': None
+        'current_category': categories
     })
 
 
