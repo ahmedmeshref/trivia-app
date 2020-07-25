@@ -40,7 +40,7 @@ def get_questions():
         'questions': formatted_questions,
         'total_questions': tot_questions,
         'categories': formatted_categories,
-        'current_category': []
+        'current_category': None
     })
 
 
@@ -115,33 +115,40 @@ category to be shown.
 '''
 
 
-# @question.route("/questions/search", method=["POST"])
-# def search_questions():
-#     search_term = request.get_json()["searchTerm"]
-#
-#     error = False
-#     try:
-#         formatted_questions, tot_questions = query_questions(request, text=None, cat_id=None)
-#     except Exception as e:
-#         error = True
-#         db.session.rollback()
-#     finally:
-#         db.session.close()
-#
-#     if error:
-#         # if eternal server error
-#         abort(500)
-#     return jsonify({
-#         'success': True,
-#         'questions': formatted_questions,
-#         'total_questions': tot_questions,
-#         'current_category': category_id
-#     })
+@question.route("/questions/search", methods=["POST"])
+def search_questions():
+    """handles POST request for getting search results. Results are paginated in groups of 10 questions.
+    Note: if searchTerm == "", all questions are returned.
+    """
+    data = request.get_json()
+    if not data:
+        # If request body is empty, raise 400 (Bad Request) error.
+        abort(400)
+    search_term = data.get("searchTerm")
+
+    error = False
+    try:
+        formatted_questions, tot_questions = query_questions(request, text=search_term)
+    except Exception as e:
+        error = True
+        db.session.rollback()
+    finally:
+        db.session.close()
+
+    if error:
+        # if eternal server error
+        abort(500)
+    return jsonify({
+        'success': True,
+        'questions': formatted_questions,
+        'total_questions': tot_questions,
+        'current_category': None
+    })
 
 
 @question.route("/categories/<int:category_id>/questions", methods=["GET"])
 def get_questions_by_cat(category_id):
-    """get questions based on category id. The questions are paginated in groups of 10 questions.
+    """handles get questions based on category id. Results are paginated in groups of 10 questions.
     @type category_id: int
     @param category_id
     @rtype: json Object
