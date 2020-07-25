@@ -134,11 +134,12 @@ def get_questions_by_cat(category_id):
     @returns: json object with results value, list of questions, number of total questions, current category id.
     """
     # verify a given category_id maps to an existing category. If not, raise 404 (Not Found) error.
-    get_item_or_404(Category, category_id)
+    category = get_item_or_404(Category, category_id)
 
     error = False
     try:
         formatted_questions, tot_questions = query_questions(request, cat_id=category_id)
+        all_categories = Category.get()
     except Exception as e:
         error = True
     finally:
@@ -149,7 +150,8 @@ def get_questions_by_cat(category_id):
         'success': True,
         'questions': formatted_questions,
         'total_questions': tot_questions,
-        'current_category': category_id
+        'current_category': category.format(),
+        'categories': all_categories
     })
 
 

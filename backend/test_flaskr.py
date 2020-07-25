@@ -124,8 +124,7 @@ class TriviaTestClass(unittest.TestCase):
         self.assertTrue(len(data["questions"]))
         self.assertTrue(data["total_questions"])
 
-    def test_400_create_question_without_specifying_searchTerm(self):
-        # test deleting existing question with id = 2
+    def test_400_create_question_without_request_body(self):
         response = self.client.post("/questions/search")
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 400)
