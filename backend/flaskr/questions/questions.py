@@ -176,17 +176,17 @@ def get_questions_for_quiz():
     @returns: random questions within the given category
     """
     data = get_request_data_or_400(request)
-    previous_questions = data.get("previousQuestions")
-    current_category = data.get("quizCategory")
-    if not (current_category and get_item_or_404(Category, current_category["id"])):
-        # if not current category on the request or given category id doesn't map to an existing category, raise Bad
-        #  Request error (400).
+    previous_questions = data.get("previous_questions")
+    current_category = data.get("quiz_category")
+    if not (current_category and get_item_or_404(Category, current_category)):
+        # if not current category on the request body or given category id doesn't map to an existing category,
+        # raise Bad Request error (400).
         abort(400)
 
     error = False
     try:
         questions = db.session.query(Question).filter(Question.id.notin_(previous_questions),
-                                                      Question.category == str(current_category["id"])).all()
+                                                      Question.category == str(current_category)).all()
         random_question = random.choice(questions)
         formatted_question = random_question.format()
     except Exception as e:
