@@ -143,15 +143,6 @@ class TriviaTestClass(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(data['question'])
 
-    def test_400_get_question_for_quiz_without_quiz_category(self):
-        previous_questions = ["3", "10", "2"]
-        response = self.client.post("/quizzes", json={
-            'previous_questions': previous_questions,
-        })
-        data = json.loads(response.data)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], 'Bad Request')
 
     def test_404_get_question_for_quiz_with_non_existing_quiz_category(self):
         previous_questions = ["3", "10", "2"]
