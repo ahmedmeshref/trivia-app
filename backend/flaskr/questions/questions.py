@@ -163,11 +163,13 @@ def get_questions_for_quiz():
     @returns: random questions within the given category
     """
     data = get_request_data_or_400(request)
+
+    # Get parameters from JSON Body.
     previous_questions = data.get("previous_questions", [])
     current_category = data.get("quiz_category", None)
     if current_category:
         # verify that a given category maps to an existing object in db.
-        get_item_or_404(Category, current_category)
+        get_item_or_404(Category, current_category['id'])
 
     error = False
     try:
@@ -175,11 +177,9 @@ def get_questions_for_quiz():
             questions = db.session.query(Question).filter(Question.id.notin_(previous_questions)).all()
         else:
             questions = db.session.query(Question).filter(Question.id.notin_(previous_questions),
-                                                          Question.category == current_category).all()
-        # random_question = random.choice(questions)
-        # formatted_question = random_question.format()
-        questions_formatted = [question.format() for question in questions]
-        random_question = questions_formatted[random.randint(0, len(questions_formatted))]
+                                                          Question.category == current_category["id"]).all()
+        random_question = random.choice(questions)
+        formatted_question = random_question.format()
     except Exception as e:
         error = True
     finally:
@@ -188,5 +188,5 @@ def get_questions_for_quiz():
     abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
-        'question': random_question,
+        'question': formatted_question
     })

@@ -3,7 +3,7 @@ import unittest
 import json
 
 from flaskr import create_app
-from flaskr.models import setup_db, db, Question
+from flaskr.models import setup_db, db, Question, Category
 from flaskr.questions.utils import QUESTIONS_PER_PAGE
 
 
@@ -133,29 +133,13 @@ class TriviaTestClass(unittest.TestCase):
 
     def test_get_question_for_quiz(self):
         previous_questions = ["3", "10"]
-        quiz_category = "2"
         response = self.client.post("/quizzes", json={
-            'previous_questions': previous_questions,
-            'quiz_category': quiz_category
+            'previous_questions': previous_questions
         })
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data['question'])
-
-
-    def test_404_get_question_for_quiz_with_non_existing_quiz_category(self):
-        previous_questions = ["3", "10", "2"]
-        # no existing category
-        quiz_category = "120"
-        response = self.client.post("/quizzes", json={
-            'previous_questions': previous_questions,
-            'quiz_category': quiz_category
-        })
-        data = json.loads(response.data)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], 'Resource Not Found')
 
 
 # Make the tests conveniently executable
