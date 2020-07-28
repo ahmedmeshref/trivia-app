@@ -133,6 +133,8 @@ Below are described the REST endpoints available.
         `curl -X GET http://127.0.0.1:5000/questions?page={number}`
         
         `curl -X GET http://127.0.0.1:5000/questions?page=2`
+        
+        > Note: if the specified page doesn't match an existing page with results, page 1's questions are going be returned. 
 
 - Response: 
 
@@ -263,7 +265,7 @@ Below are described the REST endpoints available.
     
     `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: application/json" -d '{"question": "Do you love Coding?", "answer": "yes", "category": 1, "difficulty": 3}'`
     
-    > Note: all the fields required (question, answer, category, difficulty) should specified on the request body.
+    > Note: all the fields required (question, answer, category, difficulty) should specified on the request body. If one or more fields are missing, a 400 error will eb   returned.
     
 - Response: 
     - Returns json object with a list of question objects, success value, new_plant_id, total_questions, and current_category value.
@@ -364,11 +366,220 @@ Below are described the REST endpoints available.
       "success": true
     }
     ```
+    
+## Search Questions by Sub Text
 
+Post request that enables searching all questions that includes given Search Term.
+- Sample Request:
+    `curl -X POST http://127.0.0.1:5000/questions/search -H "Content-Type: application/json" -d '{"search_term": "TEXT"}'`
+    
+    `curl -X POST http://127.0.0.1:5000/questions/search -H "Content-Type: application/json" -d '{"search_term": "what?"}'`
+    
+- Attributes:
 
+    - `Optional` Page: you can specific the desired results page in the request body as follows:
 
+        `curl -X POST http://127.0.0.1:5000/questions/search?page=1 -H "Content-Type: application/json" -d '{"search_term": "what"}'`
 
+    > Note: if the specified page doesn't match an existing page with results, page 1 questions are going be returned. 
+    
+- Response: 
 
+    - Returns json object with a list of existing matching question objects, total_matching_questions, and a success value. 
+    - Results are paginated in groups of 10 if more than 10 were found. 
+    
+    ```
+    {
+      "current_category": [
+        {
+          "id": 1,
+          "type": "Science"
+        },
+        {
+          "id": 2,
+          "type": "Art"
+        },
+        {
+          "id": 3,
+          "type": "Geography"
+        },
+        {
+          "id": 4,
+          "type": "History"
+        },
+        {
+          "id": 5,
+          "type": "Entertainment"
+        },
+        {
+          "id": 6,
+          "type": "Sports"
+        }
+      ],
+      "questions": [
+        {
+          "answer": "Edward Scissorhands",
+          "category": 5,
+          "difficulty": 3,
+          "id": 6,
+          "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+        },
+        {
+          "answer": "Muhammad Ali",
+          "category": 4,
+          "difficulty": 1,
+          "id": 9,
+          "question": "What boxer's original name is Cassius Clay?"
+        },
+        {
+          "answer": "Lake Victoria",
+          "category": 3,
+          "difficulty": 2,
+          "id": 13,
+          "question": "What is the largest lake in Africa?"
+        },
+        {
+          "answer": "Mona Lisa",
+          "category": 2,
+          "difficulty": 3,
+          "id": 17,
+          "question": "La Giaconda is better known as what?"
+        },
+        {
+          "answer": "The Liver",
+          "category": 1,
+          "difficulty": 4,
+          "id": 20,
+          "question": "What is the heaviest organ in the human body?"
+        },
+        {
+          "answer": "Blood",
+          "category": 1,
+          "difficulty": 4,
+          "id": 22,
+          "question": "Hematology is a branch of medicine involving the study of what?"
+        }
+      ],
+      "success": true,
+      "total_questions": 6
+    }
+    ```
+
+## Get Questions by Category
+
+Get request that enables getting all questions under a certine category.
+
+- Sample Request:
+    `curl -X GET http://127.0.0.1:5000/categories/<int:category_id>/questions`
+    
+    `curl -X GET http://127.0.0.1:5000/categories/2/questions`
+    
+    > Note: if the category_id doesn't match any existing category, a 404 error will be returne.
+    
+- Attributes:
+
+    - `Optional` Page: you can specific the desired results page in the request body as follows:
+
+        `curl -X GET http://127.0.0.1:5000/categories/2/questions?page=2`
+
+    > Note: if the specified page doesn't match an existing page with results, page 1 questions are going be returned. 
+    
+- Response: 
+
+    - Returns json object with a list of existing question objects under the giving category, total questions number, success value, and list of categories. 
+    - Results are paginated in groups of 10 if more than 10 were found. 
+    ```
+    {
+      "categories": [
+        {
+          "id": 1,
+          "type": "Science"
+        },
+        {
+          "id": 2,
+          "type": "Art"
+        },
+        {
+          "id": 3,
+          "type": "Geography"
+        },
+        {
+          "id": 4,
+          "type": "History"
+        },
+        {
+          "id": 5,
+          "type": "Entertainment"
+        },
+        {
+          "id": 6,
+          "type": "Sports"
+        }
+      ],
+      "current_category": {
+        "id": 2,
+        "type": "Art"
+      },
+      "questions": [
+        {
+          "answer": "Escher",
+          "category": 2,
+          "difficulty": 1,
+          "id": 16,
+          "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+        },
+        {
+          "answer": "Mona Lisa",
+          "category": 2,
+          "difficulty": 3,
+          "id": 17,
+          "question": "La Giaconda is better known as what?"
+        },
+        {
+          "answer": "One",
+          "category": 2,
+          "difficulty": 4,
+          "id": 18,
+          "question": "How many paintings did Van Gogh sell in his lifetime?"
+        },
+        {
+          "answer": "Jackson Pollock",
+          "category": 2,
+          "difficulty": 2,
+          "id": 19,
+          "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+        }
+      ],
+      "success": true,
+      "total_questions": 4
+    }
+    ```
+
+### Get Question for Quiz 
+
+Get requestfor getting questions to play the quiz. Request may contain current_category that the user has selected and
+previous questions (list). 
+
+- Sample Request:
+    `curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [1, 2, 3]}'`
+       
+    > Note: if the category is not specified, all existing questions from all categories are returned.
+        
+- Response: 
+
+    - Returns json object with a question object, and a success value. 
+    ```
+    {
+      "question": {
+        "answer": "yes",
+        "category": 5,
+        "difficulty": 3,
+        "id": 27,
+        "question": "Do you love Coding?"
+      },
+      "success": true
+    }
+    ```
 
 
 
