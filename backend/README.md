@@ -1,7 +1,7 @@
 # Full Stack Trivia API Backend
 **Version 1.0.0**
 
-A RESTful API that serves data to the trivia game. Using the Trivia API enables the user to add, delete, update, get questions, and play the game chosing a sepcific category.
+A RESTful API that serves data to the trivia game. Using the Trivia API enables the user to add, delete, update, set questions, and play the game choosing a specific category.
 
 > Note: All of the backend code follows the [PEP8 guidelines]("https://www.python.org/dev/peps/pep-0008/").
 
