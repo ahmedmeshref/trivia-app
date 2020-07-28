@@ -88,11 +88,11 @@ at the default, `http://127.0.0.1:5000/`, which is set as a proxy in frontend co
 
 Rest plants returns errors as JSON objects in the following format:
 ```   
-  {
-      'success': False,
-      'error': 404,
-      'message': 'Resource Not Found'
-  }
+{
+    'success': False,
+    'error': 404,
+    'message': 'Resource Not Found'
+}
 ```
 
 #### Overview:
@@ -140,98 +140,234 @@ Below are described the REST endpoints available.
     - Results are paginated in groups of 10. 
     
     ```
-   {
-  "categories": [
-    "Science",
-    "Art",
-    "Geography",
-    "History",
-    "Entertainment",
-    "Sports"
-  ],
-  "current_category": [
-    "Science",
-    "Art",
-    "Geography",
-    "History",
-    "Entertainment",
-    "Sports"
-  ],
-  "questions": [
     {
-      "answer": "Maya Angelou",
-      "category": 4,
-      "difficulty": 2,
-      "id": 5,
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    },
-    {
-      "answer": "Edward Scissorhands",
-      "category": 5,
-      "difficulty": 3,
-      "id": 6,
-      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-    },
-    {
-      "answer": "Muhammad Ali",
-      "category": 4,
-      "difficulty": 1,
-      "id": 9,
-      "question": "What boxer's original name is Cassius Clay?"
-    },
-    {
-      "answer": "Brazil",
-      "category": 6,
-      "difficulty": 3,
-      "id": 10,
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
-    },
-    {
-      "answer": "Uruguay",
-      "category": 6,
-      "difficulty": 4,
-      "id": 11,
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    },
-    {
-      "answer": "George Washington Carver",
-      "category": 4,
-      "difficulty": 2,
-      "id": 12,
-      "question": "Who invented Peanut Butter?"
-    },
-    {
-      "answer": "Lake Victoria",
-      "category": 3,
-      "difficulty": 2,
-      "id": 13,
-      "question": "What is the largest lake in Africa?"
-    },
-    {
-      "answer": "The Palace of Versailles",
-      "category": 3,
-      "difficulty": 3,
-      "id": 14,
-      "question": "In which royal palace would you find the Hall of Mirrors?"
-    },
-    {
-      "answer": "Agra",
-      "category": 3,
-      "difficulty": 2,
-      "id": 15,
-      "question": "The Taj Mahal is located in which Indian city?"
-    },
-    {
-      "answer": "Escher",
-      "category": 2,
-      "difficulty": 1,
-      "id": 16,
-      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+      "categories": [
+        "Science",
+        "Art",
+        "Geography",
+        "History",
+        "Entertainment",
+        "Sports"
+      ],
+      "current_category": [
+        "Science",
+        "Art",
+        "Geography",
+        "History",
+        "Entertainment",
+        "Sports"
+      ],
+      "questions": [
+        {
+          "answer": "Maya Angelou",
+          "category": 4,
+          "difficulty": 2,
+          "id": 5,
+          "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        },
+        {
+          "answer": "Edward Scissorhands",
+          "category": 5,
+          "difficulty": 3,
+          "id": 6,
+          "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+        },
+        {
+          "answer": "Muhammad Ali",
+          "category": 4,
+          "difficulty": 1,
+          "id": 9,
+          "question": "What boxer's original name is Cassius Clay?"
+        },
+        {
+          "answer": "Brazil",
+          "category": 6,
+          "difficulty": 3,
+          "id": 10,
+          "question": "Which is the only team to play in every soccer World Cup tournament?"
+        },
+        {
+          "answer": "Uruguay",
+          "category": 6,
+          "difficulty": 4,
+          "id": 11,
+          "question": "Which country won the first ever soccer World Cup in 1930?"
+        },
+        {
+          "answer": "George Washington Carver",
+          "category": 4,
+          "difficulty": 2,
+          "id": 12,
+          "question": "Who invented Peanut Butter?"
+        },
+        {
+          "answer": "Lake Victoria",
+          "category": 3,
+          "difficulty": 2,
+          "id": 13,
+          "question": "What is the largest lake in Africa?"
+        },
+        {
+          "answer": "The Palace of Versailles",
+          "category": 3,
+          "difficulty": 3,
+          "id": 14,
+          "question": "In which royal palace would you find the Hall of Mirrors?"
+        },
+        {
+          "answer": "Agra",
+          "category": 3,
+          "difficulty": 2,
+          "id": 15,
+          "question": "The Taj Mahal is located in which Indian city?"
+        },
+        {
+          "answer": "Escher",
+          "category": 2,
+          "difficulty": 1,
+          "id": 16,
+          "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+        }
+      ],
+      "success": true,
+      "total_questions": 21
     }
-  ],
-  "success": true,
-  "total_questions": 21
     ```
+    
+#### Get All Categories 
+
+- Sample Request:
+    
+    `curl -X GET http://127.0.0.1:5000/categories`
+
+- Response: 
+
+    - Returns json object with a list of categories, and success value. 
+    ```
+    {
+      "categories": [
+        "Science", 
+        "Art", 
+        "Geography", 
+        "History", 
+        "Entertainment", 
+        "Sports"
+      ], 
+      "success": true
+    }
+    ```
+    
+####  Create New Question
+    
+- Sample Request:
+    
+    `curl -X POST http://127.0.0.1:5000/questions -H "Content-Type: application/json" -d '{"question": "Do you love Coding?", "answer": "yes", "category": 1, "difficulty": 3}'`
+    
+    > Note: all the fields required (question, answer, category, difficulty) should specified on the request body.
+    
+- Response: 
+    - Returns json object with a list of question objects, success value, new_plant_id, total_questions, and current_category value.
+    ```
+    {
+      "current_category": null,
+      "questions": [
+        {
+          "answer": "Maya Angelou",
+          "category": 4,
+          "difficulty": 2,
+          "id": 5,
+          "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        },
+        {
+          "answer": "Edward Scissorhands",
+          "category": 5,
+          "difficulty": 3,
+          "id": 6,
+          "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+        },
+        {
+          "answer": "Muhammad Ali",
+          "category": 4,
+          "difficulty": 1,
+          "id": 9,
+          "question": "What boxer's original name is Cassius Clay?"
+        },
+        {
+          "answer": "Brazil",
+          "category": 6,
+          "difficulty": 3,
+          "id": 10,
+          "question": "Which is the only team to play in every soccer World Cup tournament?"
+        },
+        {
+          "answer": "Uruguay",
+          "category": 6,
+          "difficulty": 4,
+          "id": 11,
+          "question": "Which country won the first ever soccer World Cup in 1930?"
+        },
+        {
+          "answer": "George Washington Carver",
+          "category": 4,
+          "difficulty": 2,
+          "id": 12,
+          "question": "Who invented Peanut Butter?"
+        },
+        {
+          "answer": "Lake Victoria",
+          "category": 3,
+          "difficulty": 2,
+          "id": 13,
+          "question": "What is the largest lake in Africa?"
+        },
+        {
+          "answer": "The Palace of Versailles",
+          "category": 3,
+          "difficulty": 3,
+          "id": 14,
+          "question": "In which royal palace would you find the Hall of Mirrors?"
+        },
+        {
+          "answer": "Agra",
+          "category": 3,
+          "difficulty": 2,
+          "id": 15,
+          "question": "The Taj Mahal is located in which Indian city?"
+        },
+        {
+          "answer": "Escher",
+          "category": 2,
+          "difficulty": 1,
+          "id": 16,
+          "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+        }
+      ],
+      "success": true,
+      "total_questions": 22
+    }
+    ```
+    
+####  Delete Existing Plant
+    
+- Sample Request:
+
+    `curl -X DELETE http://127.0.0.1:5000/questions/{id}`   
+   
+    `curl -X DELETE http://127.0.0.1:5000/questions/9` 
+    
+    > Note: if the provided id doesn't match with any existing question id, a 404 error will be returned.
+
+- Response: 
+    - Returns json object with a success value.
+    ```
+    {
+      "success": true
+    }
+    ```
+
+
+
+
 
 
 
