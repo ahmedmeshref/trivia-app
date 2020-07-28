@@ -86,7 +86,7 @@ at the default, `http://127.0.0.1:5000/`, which is set as a proxy in frontend co
 
 ### Errors Handling 
 
-Rest plants returns errors as JSON objects in the following format:
+Trivia API returns errors as JSON objects in the following format:
 ```   
 {
     'success': False,
@@ -268,7 +268,7 @@ Below are described the REST endpoints available.
     > Note: all the fields required (question, answer, category, difficulty) should specified on the request body. If one or more fields are missing, a 400 error will eb   returned.
     
 - Response: 
-    - Returns json object with a list of question objects, success value, new_plant_id, total_questions, and current_category value.
+    - Returns json object with a list of question objects, success value, total_questions, and current_category value.
     ```
     {
       "current_category": null,
