@@ -48,12 +48,12 @@ Clone project repository by running `git clone "https://github.com/ahmedmeshref/
 
 ### Backend
 
-The `./backend` directory contains a completed Flask and SQLAlchemy server. head to [`./backend/`](./backend/README.md) for more information about the setup and app running.
+The `./backend` directory contains a completed Flask and SQLAlchemy server. head to [`./backend/README.md`](./backend/README.md) for more information about the setup and app running.
 
 
 ### Frontend
 
-The `./frontend` directory contains a complete React frontend to consume the data from the Flask server. head to [`./frontend/`](./frontend/README.md) for more information about the setup and app running.
+The `./frontend` directory contains a complete React frontend to consume the data from the Flask server. head to [`./frontend/README.md`](./frontend/README.md) for more information about the setup and app running.
 
 
 ## Contributions:
