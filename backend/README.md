@@ -367,7 +367,7 @@ Below are described the REST endpoints available.
     }
     ```
     
-## Search Questions by Sub Text
+#### Search Questions by Sub Text
 
 Post request that enables searching all questions that includes given Search Term.
 - Sample Request:
@@ -465,7 +465,7 @@ Post request that enables searching all questions that includes given Search Ter
     }
     ```
 
-## Get Questions by Category
+#### Get Questions by Category
 
 Get request that enables getting all questions under a certine category.
 
@@ -555,7 +555,7 @@ Get request that enables getting all questions under a certine category.
     }
     ```
 
-### Get Question for Quiz 
+#### Get Question for Quiz 
 
 Get requestfor getting questions to play the quiz. Request may contain current_category that the user has selected and
 previous questions (list). 
