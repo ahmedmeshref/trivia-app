@@ -60,7 +60,7 @@ python wsgi.py
 # OR 
 python3 wsgi.py
 ```
-Navigate to `http://127.0.0.1:5000/`.
+From your browser, navigate to `http://127.0.0.1:5000/`.
 
 
 
