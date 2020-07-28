@@ -15,7 +15,7 @@ Trivia is a full-stack web application built to enrich and enhance the informati
 With people being busy visiting e-commerce and accessories application, The idea of trivia was born to be a light and interesting game to attract people to spend their free time enhancing their general knowledge. The trivia game is offering this via an interesting game that lets the user choose their field of interest and ask them related questions with points to earn if they have the correct answer. 
 
 ## Main Files: Project Structure
-
+```
 ├── README.md
 ├── backend *** Contains API and test suit. 
 |    ├── __init__.py
@@ -40,6 +40,7 @@ With people being busy visiting e-commerce and accessories application, The idea
     ├── README.md *** Contains Frontend Setup 
     └── src
         └── components *** Contains React Components
+```
 
 ## Setup Project locally
 
