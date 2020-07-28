@@ -57,7 +57,7 @@ To run the server, execute:
 
 ```bash
 python wsgi.py  
-OR 
+# OR 
 python3 wsgi.py
 ```
 Navigate to `http://127.0.0.1:5000/`.
