@@ -86,7 +86,7 @@ at the default, `http://127.0.0.1:5000/`, which is set as a proxy in frontend co
 
 ### Errors Handling 
 
-Rest plants returns errors as JSON objects in the following format:
+Trivia API returns errors as JSON objects in the following format:
 ```   
 {
     'success': False,
