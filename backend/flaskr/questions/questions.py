@@ -116,7 +116,6 @@ def search_questions():
         db.session.close()
 
     abort_error_if_any(error, 500)
-
     return jsonify({
         'success': True,
         'questions': formatted_questions,
@@ -167,19 +166,29 @@ def get_questions_for_quiz():
     # Get parameters from JSON Body.
     previous_questions = data.get("previous_questions", [])
     current_category = data.get("quiz_category", None)
+    print(previous_questions, current_category)
     if current_category:
-        # verify that a given category maps to an existing object in db.
-        get_item_or_404(Category, current_category['id'])
+        if current_category["type"] == "click":
+            # click means All categories selector was selected
+            current_category = None
+        else:
+            # verify that a given category maps to an existing object in db.
+            current_category["id"] = int(current_category["id"]) + 1
+            get_item_or_404(Category, current_category['id'])
 
     error = False
     try:
         if not current_category:
+            # if no category was giving or ALL is chosen
             questions = db.session.query(Question).filter(Question.id.notin_(previous_questions)).all()
         else:
             questions = db.session.query(Question).filter(Question.id.notin_(previous_questions),
                                                           Question.category == current_category["id"]).all()
-        random_question = random.choice(questions)
-        formatted_question = random_question.format()
+
+        formatted_question = None
+        if questions:
+            random_question = random.choice(questions)
+            formatted_question = random_question.format()
     except Exception as e:
         error = True
     finally:
