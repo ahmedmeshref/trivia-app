@@ -68,7 +68,10 @@ class Category(db.Model):
 
     @staticmethod
     def get_types(formatted_categories):
-        return [cat["type"] for cat in formatted_categories]
+        out = {}
+        for cat in formatted_categories:
+            out[cat["id"]] = cat["type"]
+        return out
 
     def format(self):
         return {

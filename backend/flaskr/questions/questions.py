@@ -36,7 +36,6 @@ def get_questions():
     finally:
         db.session.close()
 
-    print(categories_types)
     # raise internal server error if error is True
     abort_error_if_any(error, 500)
     return jsonify({
