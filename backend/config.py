@@ -11,7 +11,7 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     SECRET_KEY = 'development'
-    # SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = True
 
 
 # class ProductionConfig(Config):
