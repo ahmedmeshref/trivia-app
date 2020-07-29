@@ -167,12 +167,10 @@ def get_questions_for_quiz():
     previous_questions = data.get("previous_questions", [])
     current_category = data.get("quiz_category", None)
     if current_category:
-        if current_category["type"] == "click":
-            # click means All categories selector was selected
+        if current_category['id'] == 0:
             current_category = None
         else:
             # verify that a given category maps to an existing object in db.
-            current_category["id"] = int(current_category["id"]) + 1
             get_item_or_404(Category, current_category['id'])
 
     error = False
