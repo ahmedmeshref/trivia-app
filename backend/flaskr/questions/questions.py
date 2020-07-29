@@ -36,6 +36,7 @@ def get_questions():
     finally:
         db.session.close()
 
+    print(categories_types)
     # raise internal server error if error is True
     abort_error_if_any(error, 500)
     return jsonify({
@@ -166,7 +167,6 @@ def get_questions_for_quiz():
     # Get parameters from JSON Body.
     previous_questions = data.get("previous_questions", [])
     current_category = data.get("quiz_category", None)
-    print(previous_questions, current_category)
     if current_category:
         if current_category["type"] == "click":
             # click means All categories selector was selected
