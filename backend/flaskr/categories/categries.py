@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from flask_cors import CORS
 
 from ..models import Category, db
-from flaskr.questions.utils import abort_error_if_any
+from ..questions.utils import abort_error_if_any
 
 category = Blueprint("category", __name__)
 
@@ -30,7 +30,7 @@ def get_categories():
     finally:
         db.session.close()
 
-    abort_error_if_any(error)
+    abort_error_if_any(error, 500)
     return jsonify({
         'success': True,
         'categories': categories_types
