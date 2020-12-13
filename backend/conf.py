@@ -1,11 +1,10 @@
-import os
-
+import os 
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRETKEY')
     DEBUG = True
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('POSTGRESQL') + 'trivia'
+    SQLALCHEMY_DATABASE_URI = os.environ.get("POSTGRESQL") + 'trivia'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
