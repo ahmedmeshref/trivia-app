@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Trivia is a full-stack web application built to enrich and enhance the information of the users in different fields, categories, through general questions in the related area of interest. Trivia has the following features:
+Trivia is a Full-Stack web application built to enrich and enhance the information of the users in different fields, categories, through general questions in the related area of interest. Trivia has the following features:
 
 1) Display questions - both all questions and by field (category). Questions should show the question, category and difficulty rating by default and can show/hide the answer. 
 2) Delete questions.
