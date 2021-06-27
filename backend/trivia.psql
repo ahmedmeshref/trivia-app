@@ -180,7 +180,7 @@ ALTER TABLE ONLY public.questions
 -- Name: questions category; Type: FK CONSTRAINT; Schema: public; Owner: caryn
 --
 
-ALTER TABLE ONLY public.questions
+ALTER TABLE ONLY public.
     ADD CONSTRAINT category FOREIGN KEY (category) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
