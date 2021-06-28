@@ -11,7 +11,9 @@ class Header extends Component {
   render() {
     return (
       <div className="App-header">
-        <h1 onClick={() => {this.navTo('')}}>Trivia APP</h1>
+        <h2 onClick={() => {this.navTo('')}}>
+            <img src="logo.png" alt="logo" width="55" height="50"/>
+        </h2>
         <h2 onClick={() => {this.navTo('')}}>List</h2>
         <h2 onClick={() => {this.navTo('/add')}}>Add</h2>
         <h2 onClick={() => {this.navTo('/play')}}>Play</h2>
