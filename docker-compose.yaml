@@ -4,22 +4,23 @@ services:
   api:
     restart: always
     build: ./backend
+    command: "python wsgi.py"
     ports:
-      - "5000:5000"
+      - "9410:5000"
 
-  client:
-    restart: always
-    build: ./frontend
-    command: [ "react-scripts", "build" ]
-    volumes:
-      - ./client:/frontend
-      - node-modules:/frontend/node_modules
-    environment:
-      - NODE_ENV=production
-    ports:
-      - '3000:3000'
-    depends_on:
-      - api
-
-volumes:
-  node-modules:
+#  client:
+#    restart: always
+#    build: ./frontend
+#    command: [ "react-scripts", "build" ]
+#    volumes:
+#      - ./client:/frontend
+#      - node-modules:/frontend/node_modules
+#    environment:
+#      - NODE_ENV=production
+#    ports:
+#      - '3000:3000'
+#    depends_on:
+#      - api
+#
+#volumes:
+#  node-modules:
