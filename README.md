@@ -1,4 +1,4 @@
-# Full Stack API Final Project
+# Trivia Web Application
 
 ## Introduction
 
