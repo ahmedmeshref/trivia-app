@@ -20,6 +20,7 @@
     cursor: pointer;
     border-bottom: 1px solid #fff;
     color: white;
+    border-radius: 2px;
 }
 
 .play-category:hover {
@@ -38,6 +39,8 @@
     font-size: 13px;
     align-self: center;
     border: none;
+    border-radius: 2px;
+    text-align: center;
 }
 
 .button:hover {
@@ -48,7 +51,7 @@
 
 div.button {
     margin-top: 20px;
-    margin-left: calc(50% - 50px);
+    margin-left: calc(47% - 50px);
 }
 
 .quiz-question {
@@ -68,5 +71,9 @@ div.button {
 }
 
 .quiz-answer {
+    text-align: center;
+}
+
+.final-header {
     text-align: center;
 }
