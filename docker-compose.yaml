@@ -4,16 +4,13 @@ services:
   api:
     restart: always
     build: ./backend
-    command: ["flask", "run", "--host=0.0.0.0"]
-    environment:
-      - IBM_POSTGRESQL=
     ports:
       - "5000:5000"
 
   client:
     restart: always
     build: ./frontend
-    command: ["react-scripts", "build"]
+    command: [ "react-scripts", "build" ]
     volumes:
       - ./client:/frontend
       - node-modules:/frontend/node_modules
