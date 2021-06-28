@@ -1,7 +1,6 @@
 .quiz-play-holder {
     width: 80%;
     margin-left: 10%;
-    text-align: center;
     margin-top: 40px;
 }
 
@@ -15,17 +14,36 @@
     font-weight: bold;
 }
 
+.play-category {
+    background-color: rgba(34, 34, 34, .8);
+    padding: 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #fff;
+    color: white;
+}
+
 .play-category:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
     color: dodgerblue;
+    background-color: rgba(34, 34, 34, 1);
 }
 
 .button {
-    width: 100px;
+    cursor: pointer;
+    width: 150px;
     margin-top: 5px;
-    background-color: dodgerblue;
+    background-color: rgba(30, 144, 255, 0.8);
     color: white;
-    padding: 3px 5px;
+    padding: 5px 10px;
+    font-size: 13px;
     align-self: center;
+    border: none;
+}
+
+.button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    border: none;
+    background-color: rgba(30, 144, 255, 1);
 }
 
 div.button {
@@ -36,12 +54,19 @@ div.button {
 .quiz-question {
     margin: 12px;
     font-size: 24px;
+    text-align: center;
 }
 
 .correct {
     color: green;
+    text-align: center;
 }
 
 .wrong {
     color: red;
+    text-align: center;
+}
+
+.quiz-answer {
+    text-align: center;
 }

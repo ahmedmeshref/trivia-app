@@ -13,7 +13,7 @@
 }
 
 .questions-list {
-  flex-basis: 75%;
+  flex-basis: 73%;
   text-align: center;
 }
 
@@ -68,6 +68,7 @@ span.page-num.active {
 
 img.category {
   width: 30px;
+  height: 20px;
 }
 
 img.delete {
