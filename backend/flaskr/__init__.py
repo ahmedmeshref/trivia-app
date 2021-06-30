@@ -1,6 +1,6 @@
 from flask import Flask
 
-from .models import setup_db, db, Question, Category
+from .models import setup_db
 from conf import config_by_name
 
 
